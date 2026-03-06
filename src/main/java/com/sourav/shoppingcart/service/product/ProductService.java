@@ -1,4 +1,5 @@
 package com.sourav.shoppingcart.service.product;
+import com.sourav.shoppingcart.Exception.AlreadyExistsException;
 import com.sourav.shoppingcart.Exception.ResourceNotFoundException;
 import com.sourav.shoppingcart.dto.ImageDto;
 import com.sourav.shoppingcart.dto.ProductDto;
@@ -33,6 +34,9 @@ public class ProductService implements IProductService{
         // if yes then set it in the product
         // if not , then save it in db as a new category  then set it as product category
 
+        if(productExist(request.getName(),request.getBrand())){
+            throw new AlreadyExistsException(request.getBrand()+" "+request.getName()+" already exist , you may update product instead !");
+        }
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(()->{
                     Category newCategory = new Category(request.getCategory().getName());
@@ -41,6 +45,10 @@ public class ProductService implements IProductService{
 
         request.setCategory(category);
         return productRepository.save(createProduct(request,category));
+    }
+
+    private boolean productExist(String name ,String brand){
+        return productRepository.existsByNameAndBrand(name,brand);
     }
 
     private Product createProduct(AddProductRequest request, Category category){

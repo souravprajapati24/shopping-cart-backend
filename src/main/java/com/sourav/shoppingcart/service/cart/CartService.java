@@ -2,14 +2,16 @@ package com.sourav.shoppingcart.service.cart;
 
 import com.sourav.shoppingcart.Exception.ResourceNotFoundException;
 import com.sourav.shoppingcart.model.Cart;
+import com.sourav.shoppingcart.model.User;
 import com.sourav.shoppingcart.repository.CartRepository.CartRepository;
 
 import com.sourav.shoppingcart.repository.cartItemReository.CartItemRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,6 +31,7 @@ public class CartService implements ICartService{
     }
 
     @Override
+    @Transactional
     public void clearCart(Long id) {
         Cart cart = getCart(id);
         cartItemRepository.deleteAllByCartId(id);
@@ -43,11 +46,17 @@ public class CartService implements ICartService{
     }
 
     @Override
-    public Long initializeNewCart() {
-        Cart newCart = new Cart();
-//        Long newCartId = cartIdGenerator.incrementAndGet();
-//        newCart.setId(newCartId);
-        return cartRepository.save(newCart).getId();
+    public Cart initializeNewCart(User user) {
+        return Optional.ofNullable(getCartByUserID(user.getId()))
+                .orElseGet(()->{
+                    Cart cart = new Cart();
+                    cart.setUser(user);
+                    return cartRepository.save(cart);
+                });
+    }
 
+    @Override
+    public Cart getCartByUserID(Long userId) {
+        return cartRepository.findByUserId(userId);
     }
 }

@@ -1,4 +1,5 @@
 package com.sourav.shoppingcart.controller;
+import com.sourav.shoppingcart.Exception.AlreadyExistsException;
 import com.sourav.shoppingcart.Exception.ResourceNotFoundException;
 import com.sourav.shoppingcart.dto.ProductDto;
 import com.sourav.shoppingcart.model.Product;
@@ -43,8 +44,8 @@ public class ProductController {
             Product product = productService.addProduct(request);
             ProductDto convertedProduct = productService.convertToDto(product);
             return ResponseEntity.ok(new ApiResponse("Add Product Success !",convertedProduct));
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(),null));
+        } catch (AlreadyExistsException e) {
+            return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(),null));
         }
     }
 
