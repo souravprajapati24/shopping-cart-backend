@@ -92,6 +92,39 @@ The authentication process follows a **secure JWT token-based flow**.
   "token": "JWT_TOKEN"
 }
 
+# 🏗 System Architecture
+
+The backend follows a **layered architecture pattern**.
+
+Client (Postman / Frontend)
+            │
+            ▼
+      Controller Layer
+            │
+            ▼
+       Service Layer
+     (Business Logic)
+            │
+            ▼
+      Repository Layer
+       (Spring Data JPA)
+            │
+            ▼
+        MySQL Database
+
+    ### Architecture Layers
+
+**Controller Layer**
+- Handles HTTP requests and responses.
+
+**Service Layer**
+- Contains core business logic.
+
+**Repository Layer**
+- Handles database operations using Spring Data JPA.
+
+**Database Layer**
+- MySQL relational database storing application data.
 
 🗄 Database The system uses MySQL relational database.
  #Main Tables
@@ -107,3 +140,13 @@ The authentication process follows a **secure JWT token-based flow**.
 🧪 API Testing 
 You can test the APIs using: 
 -Postman -Insomnia
+
+# 📚 What This Project Demonstrates
+
+- Building secure REST APIs with Spring Boot
+- Implementing JWT Authentication
+- Role-based authorization with Spring Security
+- Clean layered architecture
+- DTO-based API communication
+- Relational database modeling
+- Global exception handling
