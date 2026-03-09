@@ -6,6 +6,7 @@ import com.sourav.shoppingcart.model.CartItem;
 import com.sourav.shoppingcart.model.Product;
 import com.sourav.shoppingcart.repository.CartRepository.CartRepository;
 import com.sourav.shoppingcart.repository.cartItemReository.CartItemRepository;
+import com.sourav.shoppingcart.repository.productRepository.ProductRepository;
 import com.sourav.shoppingcart.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class CartItemService implements ICartItemService {
     private final IProductService productService;
     private final ICartService cartService;
     private final CartRepository cartRepository;
+    private final ProductRepository productRepository;
 
 
     @Override
@@ -32,6 +34,10 @@ public class CartItemService implements ICartItemService {
 
         Cart cart = cartService.getCart(cartId);
         Product product = productService.getProductById(productId);
+
+        product.setInventory(product.getInventory() - quantity);
+        productRepository.save(product);
+
         CartItem cartItem = cart.getItems()
                 .stream()
                 .filter(item->item.getProduct().getId().equals(productId))

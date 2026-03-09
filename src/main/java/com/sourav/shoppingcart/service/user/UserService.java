@@ -9,6 +9,9 @@ import com.sourav.shoppingcart.request.CreateUserRequest;
 import com.sourav.shoppingcart.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,6 +21,7 @@ import java.util.Optional;
 public class UserService implements IUserService{
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
     @Override
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
@@ -33,7 +37,7 @@ public class UserService implements IUserService{
                         user.setFirstName(request.getFirstName());
                         user.setLastName(request.getLastName());
                         user.setEmail(request.getEmail());
-                        user.setPassword(request.getPassword());
+                        user.setPassword(passwordEncoder.encode(request.getPassword()));
                         return userRepository.save(user);
                 }).orElseThrow(()->new AlreadyExistsException("Oops! "+request.getEmail() +" already exists!"));
     }
@@ -59,4 +63,31 @@ public class UserService implements IUserService{
     public UserDto convertUserToDto(User user){
         return modelMapper.map(user,UserDto.class);
     }
+
+    @Override
+    public User getAuthenticatedUser() {  // by this method we are getting the currently logged-in user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        return userRepository.findByEmail(email);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

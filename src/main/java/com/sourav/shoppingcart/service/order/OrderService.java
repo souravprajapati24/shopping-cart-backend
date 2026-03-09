@@ -33,6 +33,7 @@ public class OrderService implements IOrderService {
         order.setTotalAmount(calculateTotalAmount(orderItemList));
         Order savedOrder = orderRepository.save(order);
 
+
         cartService.clearCart(cart.getId());
 
         return savedOrder;
