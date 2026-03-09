@@ -1,4 +1,11 @@
 # 🛒 CommerceCore API
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-3.x-brightgreen)
+![Spring Security](https://img.shields.io/badge/SpringSecurity-JWT-blue)
+![MySQL](https://img.shields.io/badge/MySQL-Database-blue)
+![Maven](https://img.shields.io/badge/Maven-Build-red)
+![REST API](https://img.shields.io/badge/API-RESTful-yellow)
+
 ### Secure E-Commerce Backend System (Spring Boot + JWT)
 
 **CommerceCore API** is a secure, layered e-commerce backend system built using **Spring Boot** and **Spring Security**.
