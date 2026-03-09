@@ -26,7 +26,7 @@ The project follows **clean layered architecture**, **RESTful API design**, **DT
 - Stateless session management  
 
 ## 👤 User Management
-- User registration and login  
+- User login  
 - Secure password handling  
 - Role-based permissions (Admin / User)  
 
